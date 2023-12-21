@@ -120,5 +120,41 @@ namespace Cibertec.Shopping.CORE.Services
         {
             return await _repository.Delete(id);
         }
+
+        //Insert order detail
+        public async Task<bool> InsertOrderDetail(OrderDetailInsertDTO orderDetailInsertDTO)
+        {
+            var orderDetail = new OrderDetail
+            {
+                OrdersId = orderDetailInsertDTO.OrdersId,
+                ProductId = orderDetailInsertDTO.ProductId,
+                Quantity = orderDetailInsertDTO.Quantity,
+                Price = orderDetailInsertDTO.Price,
+                CreatedAt = DateTime.Now
+            };
+
+            return await _repository.InsertOrderDetail(orderDetail);
+        }
+
+        //Update order detail
+        public async Task<bool> UpdateOrderDetail(OrderDetailUpdateDTO orderDetailUpdateDTO)
+        {
+            var orderDetail = await _repository.GetOrderDetailById(orderDetailUpdateDTO.Id);
+            if (orderDetail == null)
+                return false;
+
+            orderDetail.OrdersId = orderDetailUpdateDTO.OrdersId;
+            orderDetail.ProductId = orderDetailUpdateDTO.ProductId;
+            orderDetail.Quantity = orderDetailUpdateDTO.Quantity;
+            orderDetail.Price = orderDetailUpdateDTO.Price;
+
+            return await _repository.UpdateOrderDetail(orderDetail);
+        }
+
+        //Delete order detail
+        public async Task<bool> DeleteOrderDetail(int id)
+        {
+            return await _repository.DeleteOrderDetail(id);
+        }
     }
 }

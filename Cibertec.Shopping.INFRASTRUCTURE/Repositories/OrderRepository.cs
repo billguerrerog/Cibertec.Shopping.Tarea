@@ -66,5 +66,45 @@ namespace Cibertec.Shopping.INFRASTRUCTURE.Repositories
             return rows > 0;
         }
 
+        //Insert order details
+        public async Task<bool> InsertOrderDetail(OrderDetail orderDetail)
+        {
+            await _context.OrderDetail.AddAsync(orderDetail);
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
+
+        //Update order details
+        public async Task<bool> UpdateOrderDetail(OrderDetail orderDetail)
+        {
+            _context.OrderDetail.Update(orderDetail);
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
+
+        //Get order detail by id
+        public async Task<OrderDetail> GetOrderDetailById(int id)
+        {
+            return await _context.OrderDetail
+                .Include(x => x.Product)
+                .Include(y => y.Orders)
+                .Where(w => w.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        //Delete order detail
+        public async Task<bool> DeleteOrderDetail(int id)
+        {
+            var findOrderDetail = await _context
+                            .OrderDetail
+                            .Where(x => x.Id == id)
+                            .FirstOrDefaultAsync();
+            if (findOrderDetail == null)
+                return false;
+
+            _context.OrderDetail.Remove(findOrderDetail);
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
     }
 }

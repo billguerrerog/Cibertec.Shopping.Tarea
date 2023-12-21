@@ -70,6 +70,40 @@ namespace Cibertec.Shopping.API.Controllers
             return Ok(result);
         }
 
+        //Insert order detail
+        [HttpPost("orderdetail")]
+        public async Task<IActionResult> InsertOrderDetail([FromBody] OrderDetailInsertDTO orderDetailInsertDTO)
+        {
+            var result = await _orderService.InsertOrderDetail(orderDetailInsertDTO);
+            if(!result)
+                return BadRequest();
 
+            return Ok(result);
+        }
+
+        //Update order detail
+        [HttpPut("orderdetail/{id}")]
+        public async Task<IActionResult> UpdateOrderDetail(int id, [FromBody] OrderDetailUpdateDTO orderDetailUpdateDTO)
+        {
+            if (id != orderDetailUpdateDTO.Id)
+                return BadRequest();
+
+            var result = await _orderService.UpdateOrderDetail(orderDetailUpdateDTO);
+            if(!result)
+                return BadRequest();
+
+            return Ok(result);
+        }
+
+        //Delete order detail
+        [HttpDelete("orderdetail/{id}")]
+        public async Task<IActionResult> DeleteOrderDetail(int id)
+        {
+            var result = await _orderService.DeleteOrderDetail(id);
+            if(!result)
+                return BadRequest();
+
+            return Ok(result);
+        }
     }
 }
